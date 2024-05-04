@@ -1,20 +1,22 @@
 package representation.node;
 
 import representation.Event;
-import representation.Node;
+
+import java.util.List;
 
 public class TerminalNode extends Node {
-    private static final String text = "Vous avez vaincu le dragon et avez rendu la paix au pays.";
-    @Override
-    public Event chooseNext() {
-        return this;
+
+    public TerminalNode(int id, String displayed_text, List<Integer> children) {
+        super(id, displayed_text, children);
     }
 
     @Override
-    public void addNextNode(Event node) {}
+    public boolean isTerminal() {
+        return true;
+    }
 
     @Override
-    public String display() {
-        return text;
+    public Event getNextNode(int choice) {
+        return null;
     }
 }

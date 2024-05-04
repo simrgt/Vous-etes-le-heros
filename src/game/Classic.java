@@ -1,7 +1,7 @@
 package game;
 
 import representation.Event;
-import representation.NodeFactory;
+import representation.node.NodeFactory;
 import ui.Ui;
 
 public class Classic implements Game {
@@ -13,17 +13,22 @@ public class Classic implements Game {
 
     @Override
     public void startNewGame() {
-        ui.afficher("Starting new game...");
-        ui.afficher("Loading game...");
+        ui.show("Starting new game...");
+        ui.show("Loading game...");
 
         // Code du jeu ici
-        Event firstNode = createGame();
-        ui.afficher("Game loaded.\n");
-
-        ui.afficher(firstNode.display());
+        Event firstNode = NodeFactory.createStartNode();
+        ui.show("Game loaded.\n");
+        play(firstNode);
+        ui.show("End.");
     }
 
-    private Event createGame() {
-        return NodeFactory.createStartNode();
+    private void play(Event currentNode) {
+        while (!currentNode.isTerminal()) {
+            ui.show(currentNode.display());
+            int choice = ui.ask();
+            currentNode = currentNode.getNextNode(choice);
+        }
+        ui.show(currentNode.display()); // Display the terminal node
     }
 }

@@ -1,13 +1,13 @@
-package representation;
+package representation.node;
 
 import representation.node.*;
 
 public enum NodeType {
     INNER_NODE(InnerNode.class),
-    TERMINAL_NODE(TerminalNode.class),
     DECISION_NODE(DecisionNode.class),
-    CHANCE_NODE(ChanceNode.class),
-    START_NODE(StartNode.class);
+    //CHANCE_NODE(ChanceNode.class),
+    START_NODE(StartNode.class),
+    TERMINAL_NODE(TerminalNode.class);
 
     private final Class<? extends Node> nodeClass;
 

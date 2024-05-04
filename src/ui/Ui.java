@@ -1,7 +1,7 @@
 package ui;
 
 public interface Ui {
-    void afficher(String text);
+    void show(String text);
 
-    String demander(String text);
+    int ask();
 }

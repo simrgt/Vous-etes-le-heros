@@ -1,44 +1,27 @@
 package representation.node;
 
 import representation.Event;
-import representation.Node;
 
 import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
-public class DecisionNode extends Node {
-    private final Map<Integer, Node> nextNodes;
-    private int serial = 0;
-
-    public DecisionNode() {
-        super();
-        this.nextNodes = new HashMap<>();
-    }
-
-    // Méthode pour ajouter une option de décision
-    public void addNextNode(int choice, Node node) {
-        nextNodes.put(choice, node);
-    }
-
-
-    @Override
-    public String display() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Choisissez votre action :\n");
-        for (Map.Entry<Integer, Node> entry : nextNodes.entrySet()) {
-            sb.append(entry.getKey()).append(". ");
+public class DecisionNode extends InnerNode {
+    private final HashMap<Integer, Integer> choices;
+    public DecisionNode(int id, String displayed_text, List<Integer> children) {
+        super(id, displayed_text, children);
+        choices = new HashMap<>();
+        for (int i = 0; i < children.size(); i++) {
+            choices.put(i+1, children.get(i));
         }
-        return sb.toString();
     }
 
     @Override
-    public Event chooseNext() {
-        return null;
+    public Event getNextNode(int choice) {
+        if (!choices.containsKey(choice)) {
+            return null;
+        }
+        return NodeFactory.createNode(choices.get(choice));
     }
 
-    @Override
-    public void addNextNode(Event node) {
-        nextNodes.put(serial, (Node) node);
-        serial++;
-    }
+
 }

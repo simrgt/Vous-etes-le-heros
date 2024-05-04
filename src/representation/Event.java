@@ -3,7 +3,7 @@ package representation;
 public interface Event {
     String display();
 
-    Event chooseNext();
+    boolean isTerminal();
 
-    void addNextNode(Event node);
+    Event getNextNode(int choice);
 }
