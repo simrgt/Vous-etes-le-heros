@@ -24,6 +24,6 @@ public abstract class Node implements Event {
     }
 
     public Event getNextNode(int choice) {
-        return NodeFactory.createNode(nextNode);
+        return EventFactory.createNode(nextNode);
     }
 }

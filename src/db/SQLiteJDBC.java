@@ -11,7 +11,7 @@ public class SQLiteJDBC implements DataBase {
     public NodeModel getNode(int parent_id) {
         // get query from file get_random_node.sql and replace ? with nodeType
         String query = "SELECT parent_node.ID, parent_node.DISPLAYED_TEXT, " +
-                "parent_node.type, GROUP_CONCAT(child_node.ID) AS CHILD_ID " +
+                "parent_node.type, GROUP_CONCAT(child_node.ID) AS CHILD_ID, parent_node.sound_path, parent_node.image_path " +
                 "FROM NODE AS parent_node LEFT JOIN NODE AS child_node ON parent_node.ID = child_node.PARENT " +
                 "WHERE parent_node.id = ? " +
                 "GROUP BY parent_node.ID " +
@@ -24,7 +24,9 @@ public class SQLiteJDBC implements DataBase {
                             rs.getInt("id"),
                             rs.getString("displayed_text"),
                             rs.getString("child_id"),
-                            rs.getString("type")
+                            rs.getString("type"),
+                            rs.getString("sound_path"),
+                            rs.getString("image_path")
                     );
                 }
             }
