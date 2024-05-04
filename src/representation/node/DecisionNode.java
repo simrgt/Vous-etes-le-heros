@@ -1,10 +1,14 @@
-package representation;
+package representation.node;
+
+import representation.Event;
+import representation.Node;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class DecisionNode implements Event {
+public class DecisionNode extends Node {
     private final Map<Integer, Node> nextNodes;
+    private int serial = 0;
 
     public DecisionNode() {
         super();
@@ -30,5 +34,11 @@ public class DecisionNode implements Event {
     @Override
     public Event chooseNext() {
         return null;
+    }
+
+    @Override
+    public void addNextNode(Event node) {
+        nextNodes.put(serial, (Node) node);
+        serial++;
     }
 }
