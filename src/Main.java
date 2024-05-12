@@ -1,5 +1,6 @@
 import game.Classic;
 import game.Game;
+import representation.node.InnerNode;
 import ui.Console;
 import ui.Ui;
 

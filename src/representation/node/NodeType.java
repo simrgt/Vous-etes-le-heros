@@ -1,6 +1,5 @@
 package representation.node;
 
-import representation.node.*;
 
 public enum NodeType {
     INNER_NODE(InnerNode.class),

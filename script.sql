@@ -10,7 +10,6 @@ CREATE TABLE IF NOT EXISTS NODE
   FOREIGN KEY(PARENT) REFERENCES NODE(ID) ON DELETE CASCADE ON UPDATE CASCADE
     );
 
-
 insert into NODE (ID, PARENT, TYPE, DISPLAYED_TEXT, SOUND_PATH, IMAGE_PATH) values
 (0, null, 'START_NODE',
  'Bienvenue dans les contrées de l''imaginaire. Vous êtes un aventurier intrépide, prêt à affronter les dangers les ' ||
@@ -21,7 +20,7 @@ insert into NODE (ID, PARENT, TYPE, DISPLAYED_TEXT, SOUND_PATH, IMAGE_PATH) valu
  'Vous marchez sur un clou et vous vous blessez.\nVous perdez 1 point de vie.', null, null),
 (2, 1, 'INNER_NODE',
  'Vous êtes dans un lieu mystérieux. Vous marchez sur un chemin sombre et tortueux. ' ||
- 'Vous trouvez un coffre rempli de pièces d''or.\nVous gagnez 10 pièces d''or.', 'assets/sound/coin.mp3', null),
+ 'Vous trouvez un coffre rempli de pièces d''or.\nVous gagnez 10 pièces d''or.', 'assets/sound/coin.wav', null),
 (3, 2, 'DECISION_NODE',
  'Vous êtes dans un lieu mystérieux. Vous marchez sur un chemin sombre et tortueux. ' ||
  'Vous êtes face à un dragon. Que faites-vous ?\n\n' ||

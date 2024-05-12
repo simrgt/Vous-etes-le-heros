@@ -1,29 +1,18 @@
 package representation.node;
 
 import db.NodeModel;
-import db.SQLiteJDBC;
 import representation.Event;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Random;
 
 public class EventFactory {
-    private static final SQLiteJDBC sqlite;
-
-    static {
-        try {
-            sqlite = new SQLiteJDBC();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     protected static Event createNode(int id) {
         try {
-            NodeModel nodeModel = sqlite.getNode(id);
+            NodeModel nodeModel = NodeModel.getNode(id);
             // Récupérer le constructeur correspondant au type de nœud
             Class<? extends Node> nodeClass = NodeType.valueOf(nodeModel.getType()).getNodeClass();
             Constructor<? extends Node> constructor = nodeClass.getDeclaredConstructor(int.class, String.class, List.class);
@@ -35,7 +24,7 @@ public class EventFactory {
             }
             return node;
         } catch (InstantiationException | IllegalAccessException | NoSuchMethodException |
-                 InvocationTargetException e) {
+                 InvocationTargetException | SQLException e) {
             throw new RuntimeException(e);
         }
     }
