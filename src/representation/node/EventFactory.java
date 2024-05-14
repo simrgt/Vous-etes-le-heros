@@ -8,8 +8,15 @@ import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * Factory for creating nodes.
+ */
 public class EventFactory {
 
+    /**
+     * @param id id of the node
+     * @return the node corresponding to the id
+     */
     protected static Event createNode(int id) {
         try {
             NodeModel nodeModel = NodeModel.getNode(id);
@@ -29,8 +36,10 @@ public class EventFactory {
         }
     }
 
+    /**
+     * @return the start node
+     */
     public static Event createStartNode() {
         return createNode(0);
     }
 }
-

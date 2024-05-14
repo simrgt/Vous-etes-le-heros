@@ -1,4 +1,11 @@
 drop table if exists NODE;
+drop table if exists PLAYER;
+
+CREATE TABLE IF NOT EXISTS PLAYER
+( ID INTEGER PRIMARY KEY autoincrement,
+    NAME TEXT,
+    LIFE_POINT INTEGER
+);
 
 CREATE TABLE IF NOT EXISTS NODE
 ( ID INTEGER PRIMARY KEY,
@@ -8,7 +15,7 @@ CREATE TABLE IF NOT EXISTS NODE
   SOUND_PATH TEXT,
   IMAGE_PATH TEXT,
   FOREIGN KEY(PARENT) REFERENCES NODE(ID) ON DELETE CASCADE ON UPDATE CASCADE
-    );
+);
 
 insert into NODE (ID, PARENT, TYPE, DISPLAYED_TEXT, SOUND_PATH, IMAGE_PATH) values
 (0, null, 'START_NODE',
@@ -27,17 +34,45 @@ insert into NODE (ID, PARENT, TYPE, DISPLAYED_TEXT, SOUND_PATH, IMAGE_PATH) valu
  '1. Vous attaquez le dragon.\n' ||
  '2. Vous fuyez.', null, null),
 (4, 3, 'INNER_NODE',
-'Vous attaquez le dragon. Vous êtes brûlé par sa flamme.\nVous perdez 5 points de vie.\n', null, null),
-(5, 3, 'TERMINAL_NODE',
- 'Vous fuyez le dragon. Vous vous échappez sain et sauf.\n' ||
- 'Mais vous avez abandonné votre quête.\n' ||
+ 'Vous attaquez le dragon. Vous êtes brûlé par sa flamme.\nVous perdez 5 points de vie.\n', null, null),
+(5, 3, 'INNER_NODE',
+ 'Vous fuyez devant le dragon. En courant, vous tombez dans un trou profond.\nVous perdez 3 points de vie.\n', null, null),
+(7, 4, 'TERMINAL_NODE',
+ 'Le dragon vous rattrape et vous dévore. Votre quête prend fin ici.\n' ||
  'Vous avez échoué.', null, null),
-(6, 4, 'TERMINAL_NODE',
-    'Vous avez vaincu le dragon. Félicitations !\n' ||
-    'Vous avez sauvé le royaume.\n' ||
-    'Vous êtes un héros.', null, null);
+(8, 5, 'INNER_NODE',
+ 'Vous essayez de grimper hors du trou. Après de nombreux efforts, vous réussissez à sortir.\n' ||
+ 'Vous continuez votre aventure, déterminé à sauver le royaume.', null, null),
+(10, 8, 'INNER_NODE',
+ 'Vous avez survécu à cette chute miraculeusement.\n' ||
+ 'Vous continuez votre aventure, déterminé à sauver le royaume.', null, null),
+(11, 10, 'DECISION_NODE',
+ 'Vous voyez une bifurcation dans le chemin. Lequel choisissez-vous ?\n\n' ||
+ '1. Le chemin de gauche qui semble sombre et sinistre.\n' ||
+ '2. Le chemin de droite qui semble éclairé et accueillant.', null, null),
+(12, 11, 'INNER_NODE',
+ 'Vous empruntez le chemin de gauche. Après quelques pas, vous vous rendez compte qu''il est truffé de pièges.\n' ||
+ 'Vous évitez de justesse un piège à pointes.\n' ||
+ 'Vous perdez 2 points de vie.', null, null),
+(13, 11, 'INNER_NODE',
+ 'Vous empruntez le chemin de droite. Il vous mène à un magnifique jardin fleuri.\n' ||
+ 'Vous vous reposez un moment, récupérant ainsi 3 points de vie.', null, null),
+(14, 13, 'TERMINAL_NODE',
+ 'Vous continuez votre avancée, mais un piège sournois vous attend.\n' ||
+ 'Vous succombez à vos blessures.\n' ||
+ 'Votre quête prend fin ici.\n' ||
+ 'Vous avez échoué.', null, null),
+(15, 12, 'INNER_NODE',
+ 'Vous apercevez une clairière au loin. Vous décidez de vous y rendre.\n' ||
+ 'En chemin, vous rencontrez une fée qui vous guérit complètement.\n' ||
+ 'Vous récupérez tous vos points de vie.', null, null),
+(16, 15, 'TERMINAL_NODE',
+ 'Avec votre santé restaurée, vous êtes prêt à affronter de nouveaux défis.\n' ||
+ 'Vous continuez votre quête pour sauver le royaume.', null, null);
+
 
 -- Select id, displayed_text and all id of the direct children of the node in format (id, 'displayed_text', 'id1, id2, id3')
+/*
 SELECT
     parent_node.ID,
     parent_node.DISPLAYED_TEXT,
@@ -50,6 +85,6 @@ FROM
 WHERE parent_node.id = 0
 GROUP BY
     parent_node.ID
-ORDER BY RANDOM() LIMIT 1;
+ORDER BY RANDOM() LIMIT 1;*/
 
 select * from NODE;

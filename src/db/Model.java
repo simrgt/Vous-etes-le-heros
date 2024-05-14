@@ -1,7 +1,12 @@
 package db;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
+/**
+ * Represents a model in the database.
+ */
 public abstract class Model {
     private final static Connection c;
 
@@ -13,6 +18,9 @@ public abstract class Model {
         }
     }
 
+    /**
+     * @return the connection to the database
+     */
     protected static Connection getConnection() {
         return c;
     }

@@ -7,13 +7,24 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import java.io.File;
 
+/**
+ * Represents a sound node in the game.
+ */
 public class SoundNode extends EventDecorator {
     private final String soundFileName;
+
+    /**
+     * @param event the event to decorate
+     * @param soundFileName the sound file name
+     */
     public SoundNode(Event event, String soundFileName) {
         super(event);
         this.soundFileName = soundFileName;
     }
 
+    /**
+     * @return the text to display
+     */
     @Override
     public String display() {
         try {

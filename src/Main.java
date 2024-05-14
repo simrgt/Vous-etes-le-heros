@@ -1,10 +1,15 @@
 import game.Classic;
 import game.Game;
-import representation.node.InnerNode;
 import ui.Console;
 import ui.Ui;
 
+/**
+ * Main class
+ */
 public class Main {
+    /**
+     * @param args command line arguments
+     */
     public static void main(String[] args) {
         // Création d'une interface
         Ui ui = new Console(); // Remplacez ConsoleUi par le nom de votre classe d'interface

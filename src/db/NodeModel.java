@@ -6,6 +6,9 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Represents a node in the database.
+ */
 public class NodeModel extends Model {
     private final int id;
     private final String displayed_text;
@@ -14,6 +17,14 @@ public class NodeModel extends Model {
     private final String sound_path;
     private final String image_path;
 
+    /**
+     * @param id           id of the node
+     * @param displayed_text text to display
+     * @param children    children of the node
+     * @param type        type of the node
+     * @param sound_path path to the sound file
+     * @param image_path path to the image file
+     */
     private NodeModel(int id, String displayed_text, String children, String type, String sound_path, String image_path) {
         this.id = id;
         this.displayed_text = displayed_text;
@@ -24,6 +35,11 @@ public class NodeModel extends Model {
         this.image_path = image_path;
     }
 
+    /**
+     * @param parent_id id of the parent node
+     * @return a random node with the given parent_id
+     * @throws SQLException if no node is found with the given parent_id
+     */
     public static NodeModel getNode(int parent_id) throws SQLException {
         // get query from file get_random_node.sql and replace ? with nodeType
         String query = "SELECT parent_node.ID, parent_node.DISPLAYED_TEXT, " +
@@ -49,26 +65,44 @@ public class NodeModel extends Model {
         }
     }
 
+    /**
+     * @return id of the node
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * @return text to display
+     */
     public String getDisplayed_text() {
         return displayed_text;
     }
 
+    /**
+     * @return children of the node
+     */
     public List<Integer> getChildren() {
         return children;
     }
 
+    /**
+     * @return type of the node
+     */
     public String getType() {
         return type;
     }
 
+    /**
+     * @return path to the sound file
+     */
     public String getSound_path() {
         return sound_path;
     }
 
+    /**
+     * @return path to the image file
+     */
     public String getImage_path() {
         return image_path;
     }

@@ -2,9 +2,16 @@ package ui;
 
 import java.util.Scanner;
 
+/**
+ * Console UI implementation
+ */
 public class Console implements Ui {
     private static final Scanner scanner = new Scanner(System.in);
     private static final int WIDTH = 80;
+
+    /**
+     * @param text text to show in the console
+     */
     @Override
     public void show(String text) {
         String border = "=".repeat(WIDTH);
@@ -13,6 +20,10 @@ public class Console implements Ui {
         System.out.println(border);
     }
 
+    /**
+     * @param text text to format
+     * @return formatted text
+     */
     private static String formatText(String text) {
         String[] lines = text.split("\\\\n");
         StringBuilder formattedText = new StringBuilder();
@@ -32,12 +43,19 @@ public class Console implements Ui {
         return formattedText.deleteCharAt(formattedText.length() - 1).toString();
     }
 
+    /**
+     * @param sb       StringBuilder to append spaces to
+     * @param numSpaces number of spaces to append
+     */
     private static void appendSpaces(StringBuilder sb, int numSpaces) {
         for (int i = 0; i < numSpaces; i++) {
             sb.append(' ');
         }
     }
 
+    /**
+     * @return user input
+     */
     @Override
     public int ask() {
         String input = scanner.nextLine();
