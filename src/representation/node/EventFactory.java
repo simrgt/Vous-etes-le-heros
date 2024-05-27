@@ -21,8 +21,7 @@ public class EventFactory {
         try {
             NodeModel nodeModel = NodeModel.getNode(id);
             // Récupérer le constructeur correspondant au type de nœud
-            Class<? extends Node> nodeClass = NodeType.valueOf(nodeModel.getType()).getNodeClass();
-            Constructor<? extends Node> constructor = nodeClass.getDeclaredConstructor(int.class, String.class, List.class);
+            Constructor<? extends Node> constructor = NodeType.valueOf(nodeModel.getType()).getNodeConstructor();
 
             // Instancier le nœud en utilisant le constructeur
             Event node = constructor.newInstance(nodeModel.getId(), nodeModel.getDisplayed_text(), nodeModel.getChildren());
@@ -30,8 +29,7 @@ public class EventFactory {
                 node = new SoundNode(node, nodeModel.getSound_path());
             }
             return node;
-        } catch (InstantiationException | IllegalAccessException | NoSuchMethodException |
-                 InvocationTargetException | SQLException e) {
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | SQLException e) {
             throw new RuntimeException(e);
         }
     }

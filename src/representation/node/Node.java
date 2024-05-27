@@ -42,6 +42,10 @@ public abstract class Node implements Event {
      * @return the next event
      */
     public Event getNextNode(int choice) {
-        return EventFactory.createNode(nextNode);
+        return createNode(nextNode);
+    }
+
+    protected final Event createNode(int id) {
+        return EventFactory.createNode(id);
     }
 }

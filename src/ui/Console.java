@@ -71,4 +71,10 @@ public class Console implements Ui {
             return ask(); // Demander à nouveau à l'utilisateur de saisir un entier valide
         }
     }
+
+    @Override
+    public void clear() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
 }

@@ -54,9 +54,18 @@ public class Classic implements Game {
      */
     private void play(Event currentNode) {
         while (!currentNode.isTerminal()) {
+            ui.clear();
             ui.show(currentNode.display());
             int choice = ui.ask();
-            currentNode = currentNode.getNextNode(choice);
+            Event nextNode = currentNode.getNextNode(choice);
+
+            // Redemander un choix tant que getNextNode renvoie null
+            while (nextNode == null) {
+                ui.show("Choix invalide. Veuillez réessayer.");
+                choice = ui.ask();
+                nextNode = currentNode.getNextNode(choice);
+            }
+            currentNode = nextNode;
         }
         ui.show(currentNode.display()); // Display the terminal node
     }

@@ -10,4 +10,6 @@ public interface Ui {
      * @return user input
      */
     int ask();
+
+    void clear();
 }

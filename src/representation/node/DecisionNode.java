@@ -33,7 +33,7 @@ public class DecisionNode extends InnerNode {
         if (!choices.containsKey(choice)) {
             return null;
         }
-        return EventFactory.createNode(choices.get(choice));
+        return super.createNode(choices.get(choice));
     }
 
 

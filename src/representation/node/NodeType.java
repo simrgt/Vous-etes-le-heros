@@ -1,6 +1,9 @@
 package representation.node;
 
 
+import java.lang.reflect.Constructor;
+import java.util.List;
+
 /**
  * Represents the type of node.
  */
@@ -23,8 +26,12 @@ public enum NodeType {
     /**
      * @return the class of the node
      */
-    public Class<? extends Node> getNodeClass() {
-        return nodeClass;
+    public Constructor<? extends Node> getNodeConstructor() {
+        try {
+            return nodeClass.getDeclaredConstructor(int.class, String.class, List.class);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }
