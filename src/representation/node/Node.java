@@ -2,9 +2,7 @@ package representation.node;
 
 import representation.Event;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Represents a node in the game.

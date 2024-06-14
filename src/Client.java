@@ -1,5 +1,7 @@
-import java.io.*;
-import java.net.*;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.net.InetAddress;
+import java.net.Socket;
 import java.util.Scanner;
 
 // Client class
@@ -33,7 +35,6 @@ public class Client {
                     break;
                 }
 
-                System.out.println("Sending: " + tosend);
                 dos.writeUTF(tosend);
 
                 // If client sends exit,close this connection

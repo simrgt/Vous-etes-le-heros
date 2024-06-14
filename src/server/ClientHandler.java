@@ -2,6 +2,7 @@ package server;
 
 import game.Classic;
 import game.Game;
+import ui.Console;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -21,7 +22,22 @@ public class ClientHandler extends Thread {
         this.s = s;
         this.dis = dis;
         this.dos = dos;
-        this.game = new Classic(dos, dis);
+        this.game = new Classic(new Console(
+                () -> {
+                    try {
+                        return dis.readUTF();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                },
+                str -> {
+                    try {
+                        dos.writeUTF(str);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
+        );
     }
 
     @Override

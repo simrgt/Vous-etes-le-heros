@@ -1,7 +1,5 @@
 package representation.node;
 
-import representation.Event;
-
 import java.util.List;
 
 /**

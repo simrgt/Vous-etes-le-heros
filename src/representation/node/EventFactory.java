@@ -7,7 +7,6 @@ import representation.Event;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
-import java.util.List;
 
 /**
  * Factory for creating nodes.

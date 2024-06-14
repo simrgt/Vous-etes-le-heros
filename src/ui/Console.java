@@ -1,26 +1,33 @@
-package game;
+package ui;
 
-import java.util.Scanner;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /**
  * Console UI implementation
  */
-public class Console {
+public class Console implements Ui {
     protected static final int WIDTH = 80;
-    private static final Scanner scanner = new Scanner(System.in);
+    private final Supplier<String> in;
+    private final Consumer<String> out;
+
+    public Console(Supplier<String> in, Consumer<String> out) {
+        this.in = in;
+        this.out = out;
+    }
 
     /**
      * @param text text to show in the console
      * @return
      */
 
-    public String show(String text) {
+    public void show(String text) {
         StringBuilder sb = new StringBuilder();
         String border = "=".repeat(WIDTH);
         sb.append(border).append("\n");
         sb.append(formatText(text).replace("\\n", System.lineSeparator()));
         sb.append(border).append("\n");
-        return sb.toString();
+        out.accept(sb.toString());
     }
 
     /**
@@ -57,7 +64,7 @@ public class Console {
      */
 
     public int ask() {
-        String input = scanner.nextLine();
+        String input = in.get();
 
         if (input.isEmpty()) {
             return -1; // Retourner -1 si l'utilisateur appuie sur Entrée sans saisir de valeur
@@ -66,24 +73,17 @@ public class Console {
         try {
             return Integer.parseInt(input); // Retourner l'entier si l'utilisateur en fournit un
         } catch (NumberFormatException e) {
-            System.out.println("Entrez un entier valide.");
             return ask(); // Demander à nouveau à l'utilisateur de saisir un entier valide
         }
     }
 
 
     public void clear() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+        out.accept("\033[H\033[2J");
     }
 
 
     public String askString() {
-        return scanner.nextLine();
-    }
-
-
-    public void close() {
-        scanner.close();
+        return in.get();
     }
 }

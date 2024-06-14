@@ -3,11 +3,10 @@ package game;
 import exception.PlayerAttributeException;
 import representation.Event;
 import representation.node.EventFactory;
+import ui.Ui;
 import univers.Player;
 import univers.player.NormalPlayer;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.List;
 
@@ -15,29 +14,27 @@ import java.util.List;
  * Represents a classic game.
  */
 public class Classic implements Game {
-    private final DataOutputStream dos;
-    private final DataInputStream dis;
+    private final Ui ui;
 
-    public Classic(DataOutputStream dos, DataInputStream dis) {
-        this.dos = dos;
-        this.dis = dis;
+    public Classic(Ui ui) {
+        this.ui = ui;
     }
     /**
      * Starts a new game.
      */
     @Override
     public void startNewGame() throws IOException {
-        dos.writeUTF("Bienvenue dans le jeu !\n\nChoisis une option:\n\t1. Démarrer une partie\n\t2. Quitter");
-        int choice = Integer.parseInt(dis.readUTF());
+        ui.show("Bienvenue dans le jeu !\n\nChoisis une option:\n\t1. Démarrer une partie\n\t2. Quitter");
+        int choice = ui.ask();
         switch (choice) {
             case 1:
                 startGame();
                 break;
             case 2:
-                dos.writeUTF("Exiting game...");
+                ui.show("Exiting game...");
                 break;
             default:
-                dos.writeUTF("Invalid choice. Exiting game...");
+                ui.show("Invalid choice. Exiting game...");
         }
     }
 
@@ -45,15 +42,15 @@ public class Classic implements Game {
      * Starts the game.
      */
     private void startGame() throws IOException {
-        //dos.writeUTF("Starting new game...\nLoading game...");
+        //ui.show("Starting new game...\nLoading game...");
         Player player = createPlayer();
         try {
             Event firstNode = EventFactory.createStartNode();
             play(firstNode, player);
-            dos.writeUTF("End.");
+            ui.show("End.");
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            dos.writeUTF("Error while playing game.");
+            ui.show("Error while playing game.");
         }
 
     }
@@ -75,32 +72,24 @@ public class Classic implements Game {
             sb.append("Vos points de vie : ").append(player.getAttribute("health"));
 
             if (player.isDead()) {
-                dos.writeUTF("Vous êtes mort.\nFin de la partie.");
+                ui.show("Vous êtes mort.\nFin de la partie.");
                 return;
             }
-            dos.writeUTF(sb.toString());
+            ui.show(sb.toString());
 
             int choice;
-            choice = convertToInt(dis.readUTF());
+            choice = ui.ask();
             Event nextNode = currentNode.getNextNode(choice);
 
             // Redemander un choix tant que getNextNode renvoie null
             while (nextNode == null) {
-                dos.writeUTF("Choix invalide. Veuillez réessayer.");
-                choice = convertToInt(dis.readUTF());
+                ui.show("Choix invalide. Veuillez réessayer.");
+                choice = ui.ask();
                 nextNode = currentNode.getNextNode(choice);
             }
             currentNode = nextNode;
         }
-        dos.writeUTF(currentNode.display() + "\nFin de la partie" + END_CODE); // Display the terminal node
-    }
-
-    private int convertToInt(String str) {
-        try {
-            return Integer.parseInt(str);
-        } catch (NumberFormatException e) {
-            return -1;
-        }
+        ui.show(currentNode.display() + "\nFin de la partie" + END_CODE); // Display the terminal node
     }
 
     private Player createPlayer() throws IOException {
@@ -112,36 +101,36 @@ public class Classic implements Game {
             charactersString.append("\t").append(i + 1).append(". ").append(characters.get(i));
         }
         int characterChoice;
-        dos.writeUTF(charactersString.toString());
+        ui.show(charactersString.toString());
 
         boolean valid = false;
         do {
-            characterChoice = Integer.parseInt(dis.readUTF());
+            characterChoice = ui.ask();
             if (characterChoice < 1 || characterChoice > characters.size())
-                dos.writeUTF("Choix invalide. Veuillez réessayer.\n" + charactersString);
+                ui.show("Choix invalide. Veuillez réessayer.\n" + charactersString);
             else {
-                dos.writeUTF("Votre personnage est : " + characters.get(characterChoice - 1) + "\n" +
+                ui.show("Votre personnage est : " + characters.get(characterChoice - 1) + "\n" +
                         "Confirmez-vous ?\n" +
                         "\t1. Oui\t2. Non");
-                int confirm = Integer.parseInt(dis.readUTF());
+                int confirm = ui.ask();
                 if (confirm == 1) valid = true;
-                else dos.writeUTF("Choix invalide. Veuillez réessayer.\n" + charactersString);
+                else ui.show("Choix invalide. Veuillez réessayer.\n" + charactersString);
             }
         } while (!valid);
 
         // Enter Name
         valid = false;
         String name = "";
-        dos.writeUTF("Entrez votre nom :");
+        ui.show("Entrez votre nom :");
         do {
-            name = dis.readUTF();
-            if (name.isEmpty()) dos.writeUTF("Nom invalide. Veuillez réessayer.\nEntrez votre nom :");
+            name = ui.askString();
+            if (name.isEmpty()) ui.show("Nom invalide. Veuillez réessayer.\nEntrez votre nom :");
             else {
                 String sb = "Votre nom est : " + name + "\nConfirmez-vous ?\n\t1. Oui\t2. Non";
-                dos.writeUTF(sb);
-                int confirm = Integer.parseInt(dis.readUTF());
+                ui.show(sb);
+                int confirm = ui.ask();
                 if (confirm == 1) valid = true;
-                else dos.writeUTF("Choix invalide. Veuillez réessayer.\nEntrez votre nom :");
+                else ui.show("Choix invalide. Veuillez réessayer.\nEntrez votre nom :");
             }
         } while (!valid);
 

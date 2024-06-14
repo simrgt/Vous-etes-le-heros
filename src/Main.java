@@ -22,6 +22,7 @@ public class Main {
                 System.out.println("Error while launching server.");
             }
         } else if (input.equals("local")) {
+            // Launch the game locally
             return;
         } else {
             System.out.println("Invalid input.");
