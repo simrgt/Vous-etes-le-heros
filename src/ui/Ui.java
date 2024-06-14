@@ -11,5 +11,7 @@ public interface Ui {
      */
     int ask();
 
+    String askString();
+
     void clear();
 }

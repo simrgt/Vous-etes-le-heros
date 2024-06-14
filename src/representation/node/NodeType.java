@@ -28,7 +28,7 @@ public enum NodeType {
      */
     public Constructor<? extends Node> getNodeConstructor() {
         try {
-            return nodeClass.getDeclaredConstructor(int.class, String.class, List.class);
+            return nodeClass.getDeclaredConstructor(int.class, String.class, List.class, int.class, String.class);
         } catch (NoSuchMethodException e) {
             throw new RuntimeException(e);
         }

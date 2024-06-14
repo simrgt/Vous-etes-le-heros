@@ -16,6 +16,8 @@ public class NodeModel extends Model {
     private final String type;
     private final String sound_path;
     private final String image_path;
+    private final int value;
+    private final String attribute;
 
     /**
      * @param id           id of the node
@@ -25,7 +27,7 @@ public class NodeModel extends Model {
      * @param sound_path path to the sound file
      * @param image_path path to the image file
      */
-    private NodeModel(int id, String displayed_text, String children, String type, String sound_path, String image_path) {
+    private NodeModel(int id, String displayed_text, String children, String type, String sound_path, String image_path, int value, String attribute) {
         this.id = id;
         this.displayed_text = displayed_text;
         if ((children == null) || children.isEmpty()) this.children = List.of(Integer.MAX_VALUE);
@@ -33,6 +35,8 @@ public class NodeModel extends Model {
         this.type = type;
         this.sound_path = sound_path;
         this.image_path = image_path;
+        this.value = value;
+        this.attribute = attribute;
     }
 
     /**
@@ -42,8 +46,9 @@ public class NodeModel extends Model {
      */
     public static NodeModel getNode(int parent_id) throws SQLException {
         // get query from file get_random_node.sql and replace ? with nodeType
-        String query = "SELECT parent_node.ID, parent_node.DISPLAYED_TEXT, " +
-                "parent_node.type, GROUP_CONCAT(child_node.ID) AS CHILD_ID, parent_node.sound_path, parent_node.image_path " +
+        String query = "SELECT parent_node.ID, parent_node.DISPLAYED_TEXT, parent_node.type, " +
+                "GROUP_CONCAT(child_node.ID) AS CHILD_ID, parent_node.sound_path, parent_node.image_path, " +
+                "parent_node.attribute, parent_node.valueattribute " +
                 "FROM NODE AS parent_node LEFT JOIN NODE AS child_node ON parent_node.ID = child_node.PARENT " +
                 "WHERE parent_node.id = ? " +
                 "GROUP BY parent_node.ID " +
@@ -58,7 +63,9 @@ public class NodeModel extends Model {
                     rs.getString("child_id"),
                     rs.getString("type"),
                     rs.getString("sound_path"),
-                    rs.getString("image_path")
+                    rs.getString("image_path"),
+                    rs.getInt("attribute"),
+                    rs.getString("valueattribute")
             );
         } else {
             throw new SQLException("No node found with parent_id " + parent_id);
@@ -105,5 +112,19 @@ public class NodeModel extends Model {
      */
     public String getImage_path() {
         return image_path;
+    }
+
+    /**
+     * @return value of the node
+     */
+    public int getValue() {
+        return value;
+    }
+
+    /**
+     * @return attribute of the node
+     */
+    public String getAttribute() {
+        return attribute;
     }
 }

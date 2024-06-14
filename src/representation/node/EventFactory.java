@@ -24,7 +24,7 @@ public class EventFactory {
             Constructor<? extends Node> constructor = NodeType.valueOf(nodeModel.getType()).getNodeConstructor();
 
             // Instancier le nœud en utilisant le constructeur
-            Event node = constructor.newInstance(nodeModel.getId(), nodeModel.getDisplayed_text(), nodeModel.getChildren());
+            Event node = constructor.newInstance(nodeModel.getId(), nodeModel.getDisplayed_text(), nodeModel.getChildren(), nodeModel.getValue(), nodeModel.getAttribute());
             if (nodeModel.getSound_path() != null) {
                 node = new SoundNode(node, nodeModel.getSound_path());
             }

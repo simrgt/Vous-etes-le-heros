@@ -77,4 +77,9 @@ public class Console implements Ui {
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
+
+    @Override
+    public String askString() {
+        return scanner.nextLine();
+    }
 }

@@ -39,4 +39,14 @@ public abstract class EventDecorator implements Event {
     public Event getNextNode(int choice) {
         return event.getNextNode(choice);
     }
+
+    @Override
+    public int getValue() {
+        return event.getValue();
+    }
+
+    @Override
+    public String getAttribute() {
+        return event.getAttribute();
+    }
 }

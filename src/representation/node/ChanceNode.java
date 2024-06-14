@@ -5,10 +5,7 @@ import representation.Event;
 import java.util.HashMap;
 import java.util.List;
 
-/**
- * Represents a decision node in the game.
- */
-public class DecisionNode extends InnerNode {
+public class ChanceNode extends InnerNode {
     private final HashMap<Integer, Integer> choices;
 
     /**
@@ -16,7 +13,7 @@ public class DecisionNode extends InnerNode {
      * @param displayed_text text to display
      * @param children children of the node
      */
-    public DecisionNode(int id, String displayed_text, List<Integer> children, int value, String attribute) {
+    public ChanceNode(int id, String displayed_text, List<Integer> children, int value, String attribute) {
         super(id, displayed_text, children, value, attribute);
         choices = new HashMap<>();
         for (int i = 0; i < children.size(); i++) {

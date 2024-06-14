@@ -19,4 +19,8 @@ public interface Event {
      * @return the next event
      */
     Event getNextNode(int choice);
+
+    int getValue();
+
+    String getAttribute();
 }

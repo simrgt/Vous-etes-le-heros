@@ -45,4 +45,14 @@ public class SoundNode extends EventDecorator {
         }
         return super.display();
     }
+
+    @Override
+    public int getValue() {
+        return super.getValue();
+    }
+
+    @Override
+    public String getAttribute() {
+        return super.getAttribute();
+    }
 }

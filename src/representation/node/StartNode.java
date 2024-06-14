@@ -12,7 +12,7 @@ public class StartNode extends Node {
      * @param displayed_text text to display
      * @param children children of the node
      */
-    public StartNode(int id, String displayed_text, List<Integer> children) {
-        super(id, displayed_text, children);
+    public StartNode(int id, String displayed_text, List<Integer> children, int value, String attribute) {
+        super(id, displayed_text, children, value, attribute);
     }
 }
