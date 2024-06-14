@@ -5,6 +5,7 @@ import java.net.Socket;
 import java.util.Scanner;
 
 // Client class
+@SuppressWarnings("ALL")
 public class Client {
     private static final String END_CODE = "#!#END#!#";
     public static void main(String[] args) {
@@ -51,6 +52,8 @@ public class Client {
             scn.close();
             dis.close();
             dos.close();
+        } catch(java.net.ConnectException e) {
+            System.out.println("Vérifier la connexion au serveur");
         } catch(Exception e) {
             e.printStackTrace();
         }

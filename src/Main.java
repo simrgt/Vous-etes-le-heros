@@ -1,4 +1,8 @@
+import game.Classic;
+import game.Game;
 import server.Server;
+import ui.Console;
+import ui.Ui;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -22,8 +26,14 @@ public class Main {
                 System.out.println("Error while launching server.");
             }
         } else if (input.equals("local")) {
-            // Launch the game locally
-            return;
+            try {
+                new Classic(new Console(
+                        () -> new Scanner(System.in).nextLine(),
+                        System.out::println
+                )).startNewGame();
+            } catch (IOException e) {
+                System.out.println("Error while launching game.");
+            }
         } else {
             System.out.println("Invalid input.");
         }
