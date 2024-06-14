@@ -4,12 +4,13 @@ import representation.Event;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Represents a decision node in the game.
  */
 public class DecisionNode extends InnerNode {
-    private final HashMap<Integer, Integer> choices;
+    private final Map<Integer, Integer> choices;
 
     /**
      * @param id id of the node

@@ -6,7 +6,7 @@ import java.util.List; /**
  * They have different abilities and characteristics, like health points, chance of success, etc.
  * They can also have different interactions with the environment.
  * They can be controlled by the player.
- * Get all the values of the characters from database in table Character.
+ * They have all the same attributes in Attribute.java.
  */
 public enum Character {
     // Health points, strength, dexterity, intelligence, charisma, luck different for each character

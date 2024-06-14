@@ -1,5 +1,6 @@
 package univers;
 
+import exception.PlayerAttributeException;
 import univers.player.Character;
 
 import java.util.List;
@@ -16,4 +17,10 @@ public interface Player {
     static List<String> listOfCharacters() {
         return Character.valuesString();
     }
+
+    int getAttribute(String attribute) throws PlayerAttributeException;
+
+    boolean isDead();
+
+    int interact(int value, String attribute);
 }

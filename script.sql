@@ -27,17 +27,17 @@ insert into NODE (ID, PARENT, TYPE, DISPLAYED_TEXT, SOUND_PATH, IMAGE_PATH, ATTR
  ' qui détermineront votre destinée.', null, null, null, null),
 (1, 0, 'INNER_NODE',
  'Vous êtes dans un lieu mystérieux. Vous marchez sur un chemin sombre et tortueux. ' ||
- 'Vous marchez sur un clou et vous vous blessez.\nVous perdez 1 point de vie.', null, null, null, null),
+ 'Vous marchez sur un clou et vous vous blessez.\nVous perdez #&# point de vie.', null, null, 'DEXTERITY', 10),
 (2, 1, 'INNER_NODE',
  'Vous êtes dans un lieu mystérieux. Vous marchez sur un chemin sombre et tortueux. ' ||
- 'Vous trouvez un coffre rempli de pièces d''or.\nVous gagnez 10 pièces d''or.', 'assets/sound/coin.wav', null, null, null),
+ 'Vous trouvez un coffre rempli de pièces d''or.\nVous gagnez #&# pièces d''or.', 'assets/sound/coin.wav', null, null, null),
 (3, 2, 'DECISION_NODE',
  'Vous êtes dans un lieu mystérieux. Vous marchez sur un chemin sombre et tortueux. ' ||
  'Vous êtes face à un dragon. Que faites-vous ?\n\n' ||
  '1. Vous attaquez le dragon.\n' ||
  '2. Vous fuyez.', null, null, null, null),
 (4, 3, 'INNER_NODE',
- 'Vous attaquez le dragon. Vous êtes brûlé par sa flamme.\nVous perdez 5 points de vie.\n', null, null, null, null),
+ 'Vous attaquez le dragon. Vous êtes brûlé par sa flamme.\nVous perdez #&# points de vie.\n', null, null, 'STRENGTH', 10),
 (5, 3, 'INNER_NODE',
  'Vous fuyez devant le dragon. En courant, vous tombez dans un trou profond.\nVous perdez 3 points de vie.\n', null, null, null, null),
 (7, 4, 'TERMINAL_NODE',
@@ -71,7 +71,10 @@ insert into NODE (ID, PARENT, TYPE, DISPLAYED_TEXT, SOUND_PATH, IMAGE_PATH, ATTR
  'Vous récupérez tous vos points de vie.', null, null, null, null),
 (16, 15, 'TERMINAL_NODE',
  'Avec votre santé restaurée, vous êtes prêt à affronter de nouveaux défis.\n' ||
- 'Vous continuez votre quête pour sauver le royaume.', null, null, null, null);
+ 'Vous continuez votre quête pour sauver le royaume.', null, null, null, null),
+(17, 16, 'CHANCE_NODE',
+ 'Vous êtes dans une forêt sombre et mystérieuse. Vous entendez un bruit étrange.\n' ||
+ 'Vous décidez de vous en approcher pour voir ce qui se passe.', null, null, null, null);
 
 
 -- Select id, displayed_text and all id of the direct children of the node in format (id, 'displayed_text', 'id1, id2, id3')

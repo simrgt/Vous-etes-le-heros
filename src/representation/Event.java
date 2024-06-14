@@ -4,6 +4,7 @@ package representation;
  * Represents an event in the game.
  */
 public interface Event {
+    static final String replace_text = "#&#";
     /**
      * @return the text to display
      */

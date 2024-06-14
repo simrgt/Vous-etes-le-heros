@@ -2,7 +2,9 @@ package representation.node;
 
 import representation.Event;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Represents a node in the game.
@@ -22,9 +24,9 @@ public abstract class Node implements Event {
     public Node(int id, String displayed_text, List<Integer> children, int value, String attribute) {
         this.id = id;
         this.displayed_text = displayed_text;
-        this.nextNode = children.get(0);
         this.value = value;
         this.attribute = attribute;
+        this.nextNode = children.get(0);
     }
 
     /**

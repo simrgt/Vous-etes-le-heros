@@ -27,7 +27,7 @@ public class NodeModel extends Model {
      * @param sound_path path to the sound file
      * @param image_path path to the image file
      */
-    private NodeModel(int id, String displayed_text, String children, String type, String sound_path, String image_path, int value, String attribute) {
+    private NodeModel(int id, String displayed_text, String children, String type, String sound_path, String image_path, String attribute, int value) {
         this.id = id;
         this.displayed_text = displayed_text;
         if ((children == null) || children.isEmpty()) this.children = List.of(Integer.MAX_VALUE);
@@ -64,8 +64,8 @@ public class NodeModel extends Model {
                     rs.getString("type"),
                     rs.getString("sound_path"),
                     rs.getString("image_path"),
-                    rs.getInt("attribute"),
-                    rs.getString("valueattribute")
+                    rs.getString("attribute"),
+                    rs.getInt("valueattribute")
             );
         } else {
             throw new SQLException("No node found with parent_id " + parent_id);

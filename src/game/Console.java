@@ -1,23 +1,26 @@
-package ui;
+package game;
 
 import java.util.Scanner;
 
 /**
  * Console UI implementation
  */
-public class Console implements Ui {
+public class Console {
+    protected static final int WIDTH = 80;
     private static final Scanner scanner = new Scanner(System.in);
-    private static final int WIDTH = 80;
 
     /**
      * @param text text to show in the console
+     * @return
      */
-    @Override
-    public void show(String text) {
+
+    public String show(String text) {
+        StringBuilder sb = new StringBuilder();
         String border = "=".repeat(WIDTH);
-        System.out.println(border);
-        System.out.println(formatText(text).replace("\\n", System.lineSeparator()));
-        System.out.println(border);
+        sb.append(border).append("\n");
+        sb.append(formatText(text).replace("\\n", System.lineSeparator()));
+        sb.append(border).append("\n");
+        return sb.toString();
     }
 
     /**
@@ -25,22 +28,18 @@ public class Console implements Ui {
      * @return formatted text
      */
     private static String formatText(String text) {
-        String[] lines = text.split("\\\\n");
-        StringBuilder formattedText = new StringBuilder();
-        for (String line : lines) {
-            while (line.length() > WIDTH - 4) {
-                int spaceIndex = line.lastIndexOf(' ', WIDTH - 4);
-                if (spaceIndex == -1) spaceIndex = WIDTH - 4;
-                formattedText.append("| ").append(line, 0, spaceIndex);
-                appendSpaces(formattedText, WIDTH - 4 - spaceIndex);
-                formattedText.append(" |\n");
-                line = line.substring(spaceIndex).trim();
-            }
-            formattedText.append("| ").append(line);
-            appendSpaces(formattedText, WIDTH - 4 - line.length());
-            formattedText.append(" |\n");
+        // Split the text into lines and add | at the beginning and end of each line
+        // to make it look like a dialog, the width of the dialog is 80 characters
+        StringBuilder sb = new StringBuilder();
+        for (String line : text.split("\n")) {
+            sb.append("| ");
+            int lineLength = line.length();
+            int numSpaces = WIDTH - lineLength - 4; // 4 = 2 spaces at the beginning and 2 spaces at the end
+            sb.append(line);
+            appendSpaces(sb, numSpaces);
+            sb.append(" |\n");
         }
-        return formattedText.deleteCharAt(formattedText.length() - 1).toString();
+        return sb.toString();
     }
 
     /**
@@ -56,7 +55,7 @@ public class Console implements Ui {
     /**
      * @return user input
      */
-    @Override
+
     public int ask() {
         String input = scanner.nextLine();
 
@@ -72,14 +71,19 @@ public class Console implements Ui {
         }
     }
 
-    @Override
+
     public void clear() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
 
-    @Override
+
     public String askString() {
         return scanner.nextLine();
+    }
+
+
+    public void close() {
+        scanner.close();
     }
 }

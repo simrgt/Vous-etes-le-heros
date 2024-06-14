@@ -1,7 +1,7 @@
-import game.Classic;
-import game.Game;
-import ui.Console;
-import ui.Ui;
+import server.Server;
+
+import java.io.IOException;
+import java.util.Scanner;
 
 /**
  * Main class
@@ -11,13 +11,21 @@ public class Main {
      * @param args command line arguments
      */
     public static void main(String[] args) {
-        // Création d'une interface
-        Ui ui = new Console(); // Remplacez ConsoleUi par le nom de votre classe d'interface
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter 'server' to launch the server or 'local' to launch the clientMode to play local.");
+        String input = scanner.nextLine();
+        if (input.equals("server")) {
+            try {
+                System.out.println("Launching server...");
+                Server.launch();
+            } catch (IOException e) {
+                System.out.println("Error while launching server.");
+            }
+        } else if (input.equals("local")) {
+            return;
+        } else {
+            System.out.println("Invalid input.");
+        }
 
-        // Création d'une instance de jeu
-        Game jeu = new Classic(ui); // Remplacez MonJeu par le nom de votre classe de jeu
-
-        // Démarrage d'une nouvelle partie
-        jeu.startNewGame();
     }
 }

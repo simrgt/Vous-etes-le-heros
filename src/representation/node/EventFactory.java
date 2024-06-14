@@ -1,6 +1,7 @@
 package representation.node;
 
 import db.NodeModel;
+import exception.CreateNodeException;
 import representation.Event;
 
 import java.lang.reflect.Constructor;
@@ -30,14 +31,14 @@ public class EventFactory {
             }
             return node;
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | SQLException e) {
-            throw new RuntimeException(e);
+            throw new CreateNodeException("Error while creating node", e);
         }
     }
 
     /**
      * @return the start node
      */
-    public static Event createStartNode() {
+    public static Event createStartNode() throws CreateNodeException {
         return createNode(0);
     }
 }
