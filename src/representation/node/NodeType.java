@@ -10,7 +10,7 @@ import java.util.List;
 public enum NodeType {
     INNER_NODE(InnerNode.class),
     DECISION_NODE(DecisionNode.class),
-    //CHANCE_NODE(ChanceNode.class),
+    CHANCE_NODE(ChanceNode.class),
     START_NODE(StartNode.class),
     TERMINAL_NODE(TerminalNode.class);
 

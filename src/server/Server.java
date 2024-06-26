@@ -5,8 +5,16 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Objects;
+import java.util.logging.Logger;
 
+/**
+ * Server class
+ */
 public class Server {
+    /**
+     * @throws IOException if an I/O error occurs when creating the socket
+     */
     public static void launch() throws IOException {
         // server is listening on port 5056
         ServerSocket ss = new ServerSocket(5056);
@@ -16,7 +24,6 @@ public class Server {
         // client request
         while (true) {
             Socket s = null;
-
             try {
                 // socket object to receive incoming client requests
                 s = ss.accept();
@@ -34,10 +41,9 @@ public class Server {
 
                 // Invoking the start() method
                 t.start();
-
             } catch (Exception e) {
-                s.close();
-                e.printStackTrace();
+                Logger.getGlobal().severe(e.getMessage());
+                Objects.requireNonNull(s).close();
             }
         }
     }

@@ -17,7 +17,7 @@ public class EventFactory {
      * @param id id of the node
      * @return the node corresponding to the id
      */
-    protected static Event createNode(int id) {
+    public static Event createNode(int id) {
         try {
             NodeModel nodeModel = NodeModel.getNode(id);
             // Récupérer le constructeur correspondant au type de nœud
@@ -30,6 +30,7 @@ public class EventFactory {
             }
             return node;
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | SQLException e) {
+            System.out.println(e.getMessage());
             throw new CreateNodeException("Error while creating node", e);
         }
     }

@@ -3,9 +3,21 @@ package univers.player;
 import exception.PlayerAttributeException;
 import univers.Player;
 
+/**
+ * Represents a normal player in the game.
+ */
 public class NormalPlayer implements Player {
+    /**
+     * Name of the player.
+     */
     private final String name;
+    /**
+     * Character of the player.
+     */
     private final Character character;
+    /**
+     * Health points of the player.
+     */
     private int healthPoints;
 
     /**
@@ -30,13 +42,13 @@ public class NormalPlayer implements Player {
      * @return value of the attribute
      */
     public int getAttribute(String attribute) throws PlayerAttributeException{
-        Attribute aatr;
+        Attribute attr;
         try {
-            aatr = Attribute.valueOf(attribute.toUpperCase());
+            attr = Attribute.valueOf(attribute.toUpperCase());
         } catch (IllegalArgumentException e) {
             throw new PlayerAttributeException(attribute);
         }
-        return switch (aatr) {
+        return switch (attr) {
             case HEALTH -> healthPoints;
             case STRENGTH -> character.getStrength();
             case DEXTERITY -> character.getDexterity();
@@ -53,15 +65,29 @@ public class NormalPlayer implements Player {
         this.healthPoints += healthPoints;
     }
 
+    /**
+     * @return true if the player is dead, false otherwise
+     */
     public boolean isDead() {
         return healthPoints <= 0;
     }
 
+    /**
+     * @param value value to interact with
+     * @param attribute attribute to interact with
+     * @return the result of the interaction
+     * @throws PlayerAttributeException if the attribute is invalid
+     */
     @Override
-    public int interact(int value, String attribute) {
+    public int interact(int value, String attribute) throws PlayerAttributeException {
         if (attribute != null) {
-            Attribute attr = Attribute.valueOf(attribute.toUpperCase());
-            int result = 0;
+            Attribute attr;
+            try {
+                attr = Attribute.valueOf(attribute.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                throw new PlayerAttributeException(attribute);
+            }
+            int result;
             switch (attr) {
                 case HEALTH:
                     updateHealthPoints(value);
@@ -87,6 +113,13 @@ public class NormalPlayer implements Player {
             updateHealthPoints(result);
             return result;
         }
-        throw new PlayerAttributeException(attribute);
+        throw new PlayerAttributeException();
+    }
+
+    /**
+     * @return character of the player
+     */
+    public String getCharacter() {
+        return character.toString();
     }
 }

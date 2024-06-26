@@ -5,8 +5,9 @@ import representation.Event;
 /**
  * Represents a decorator for an event.
  */
-public abstract class EventDecorator implements Event {
+public abstract class EventDecorator implements Event  {
     private final Event event;
+    protected final static String SOUND_FLAG = "#$#SOUND#$#";
 
     /**
      * @param event event to decorate
@@ -48,5 +49,10 @@ public abstract class EventDecorator implements Event {
     @Override
     public String getAttribute() {
         return event.getAttribute();
+    }
+
+    @Override
+    public int getId() {
+        return event.getId();
     }
 }

@@ -8,14 +8,35 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.logging.Logger;
 
+/**
+ * ClientHandler class
+ */
 public class ClientHandler extends Thread {
+    /**
+     * Input stream
+     */
     final DataInputStream dis;
+    /**
+     * Output stream
+     */
     final DataOutputStream dos;
+    /**
+     * Socket
+     */
     final Socket s;
+    /**
+     * Game
+     */
     Game game;
 
 
+    /**
+     * @param s socket
+     * @param dis input stream
+     * @param dos output stream
+     */
     // Constructor
     public ClientHandler(Socket s, DataInputStream dis, DataOutputStream dos)
     {
@@ -40,20 +61,23 @@ public class ClientHandler extends Thread {
         );
     }
 
+    /**
+     * Run method
+     */
     @Override
     public void run() {
         try {
             game.startNewGame();
         } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            // closing resources
-            this.dis.close();
-            this.dos.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+            Logger.getGlobal().severe(e.getMessage());
+        } finally {
+            try {
+                // closing resources
+                this.dis.close();
+                this.dos.close();
+            } catch(IOException e){
+                Logger.getGlobal().severe(e.getMessage());
+            }
         }
     }
 }

@@ -1,7 +1,9 @@
 package univers.player;
 
 import java.util.ArrayList;
-import java.util.List; /**
+import java.util.List;
+
+/**
  * Represents different types of characters in the game like Human, Elf, Orc, etc.
  * They have different abilities and characteristics, like health points, chance of success, etc.
  * They can also have different interactions with the environment.
@@ -9,17 +11,47 @@ import java.util.List; /**
  * They have all the same attributes in Attribute.java.
  */
 public enum Character {
+    /**
+     * Human character.
+     */
     // Health points, strength, dexterity, intelligence, charisma, luck different for each character
     HUMAN(100, 10, 10, 10, 10, 10),
+    /**
+     * Elf character.
+     */
     ELF(80, 5, 15, 15, 10, 10),
+    /**
+     * Orc character.
+     */
     ORC(120, 15, 5, 5, 5, 10),
+    /**
+     * Dwarf character.
+     */
     DWARF(90, 10, 10, 10, 5, 15);
 
+    /**
+     * Attributes of the character.
+     */
     private final int healthPoints;
+    /**
+     * Strength of the character.
+     */
     private final int strength;
+    /**
+     * Dexterity of the character.
+     */
     private final int dexterity;
+    /**
+     * Intelligence of the character.
+     */
     private final int intelligence;
+    /**
+     * Charisma of the character.
+     */
     private final int charisma;
+    /**
+     * Luck of the character.
+     */
     private final int luck;
 
     /**
@@ -90,5 +122,9 @@ public enum Character {
      */
     public int getLuck() {
         return luck;
+    }
+
+    public String toString() {
+        return this.name();
     }
 }

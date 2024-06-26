@@ -4,7 +4,7 @@ package representation;
  * Represents an event in the game.
  */
 public interface Event {
-    static final String replace_text = "#&#";
+    String replace_text = "#&#";
     /**
      * @return the text to display
      */
@@ -21,7 +21,18 @@ public interface Event {
      */
     Event getNextNode(int choice);
 
+    /**
+     * @return the value of the event
+     */
     int getValue();
 
+    /**
+     * @return the attribute of the event
+     */
     String getAttribute();
+
+    /**
+     * @return the id of the event
+     */
+    int getId();
 }

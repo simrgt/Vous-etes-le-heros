@@ -1,5 +1,6 @@
 package game;
 
+import db.GameStateModel;
 import exception.PlayerAttributeException;
 import representation.Event;
 import representation.node.EventFactory;
@@ -8,45 +9,101 @@ import univers.Player;
 import univers.player.NormalPlayer;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Represents a classic game.
  */
 public class Classic implements Game {
+    /**
+     * Ui of the game.
+     */
     private final Ui ui;
 
+    private GameState gameState;
+
+    /**
+     * @param ui ui of the game
+     */
     public Classic(Ui ui) {
         this.ui = ui;
     }
+
     /**
      * Starts a new game.
      */
     @Override
     public void startNewGame() throws IOException {
-        ui.show("Bienvenue dans le jeu !\n\nChoisis une option:\n\t1. Démarrer une partie\n\t2. Quitter");
+        ui.show("Bienvenue dans le jeu !" + ui.getEscape() + ui.getEscape() +
+                "Choisis une option:" + ui.getEscape() + ui.getTab() +
+                "1. Démarrer une partie" + ui.getEscape() + ui.getTab() +
+                "2. Charger une partie" + ui.getEscape() + ui.getTab() +
+                "3. Quitter");
         int choice = ui.ask();
         switch (choice) {
             case 1:
                 startGame();
                 break;
             case 2:
-                ui.show("Exiting game...");
+                try {
+                    restartGame();
+                } catch (SQLException e) {
+                    System.out.println("Error while loading game: " + e.getMessage());
+                    ui.show("Error while loading game. Exiting game...#!#END#!#");
+                }
+                break;
+            case 3:
+                ui.show("Exiting game...#!#END#!#");
                 break;
             default:
-                ui.show("Invalid choice. Exiting game...");
+                ui.show("Invalid choice. Exiting game...#!#END#!#");
         }
+    }
+
+
+    /**
+     * @throws SQLException if an error occurs while loading the game
+     */
+    private void restartGame() throws SQLException {
+        // show saved games
+        Map<Integer, String> savedGames = GameState.getSavedGames();
+        if (savedGames.isEmpty()) {
+            ui.show("Aucune partie sauvegardée.");
+            ui.askString();
+            startGame();
+            return;
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append("Choisissez une partie à charger :").append(ui.getEscape());
+        for (Map.Entry<Integer, String> entry : savedGames.entrySet()) {
+            sb.append(ui.getTab()).append(entry.getKey()).append(". ").append(entry.getValue()).append(ui.getEscape());
+        }
+        ui.show(sb.toString());
+        int choice = ui.ask();
+        if (choice < 1 || !savedGames.containsKey(choice)) {
+            ui.show("Choix invalide. Veuillez réessayer.");
+            restartGame();
+            return;
+        }
+        
+        Player player = GameStateModel.loadGameState(choice);
+        Event currentNode = GameStateModel.loadCurrentNode(choice);
+        gameState = new GameState(choice, player, currentNode);
+
+        play();
     }
 
     /**
      * Starts the game.
      */
-    private void startGame() throws IOException {
-        //ui.show("Starting new game...\nLoading game...");
+    private void startGame() {
         Player player = createPlayer();
         try {
             Event firstNode = EventFactory.createStartNode();
-            play(firstNode, player);
+            gameState = new GameState(player, firstNode);
+            play();
             ui.show("End.");
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -54,51 +111,51 @@ public class Classic implements Game {
         }
 
     }
-
-
-    /**
-     * @param currentNode current node
-     * @param player player
-     */
-    private void play(Event currentNode, Player player) throws IOException {
-        while (!currentNode.isTerminal()) {
+    private void play() {
+        while (!gameState.getEvent().isTerminal()) {
             StringBuilder sb = new StringBuilder();
             try {
-                int lostLifePoint = Math.abs(player.interact(currentNode.getValue(), currentNode.getAttribute()));
-                sb.append(currentNode.display().replace(Event.replace_text, String.valueOf(lostLifePoint))).append("\n");
+                int lostLifePoint = Math.abs(gameState.getPlayer().interact(gameState.getEvent().getValue(), gameState.getEvent().getAttribute()));
+                sb.append(gameState.getEvent().display().replace(Event.replace_text, String.valueOf(lostLifePoint)));
             } catch (PlayerAttributeException e) {
-                sb.append(currentNode.display()).append("\n");
+                sb.append(gameState.getEvent().display());
             }
-            sb.append("Vos points de vie : ").append(player.getAttribute("health"));
+            sb.append(ui.getBaliseLife()).append("Vos points de vie : ").append(gameState.getPlayer().getAttribute("health")).append(ui.getBaliseLife());
 
-            if (player.isDead()) {
-                ui.show("Vous êtes mort.\nFin de la partie.");
+            if (gameState.getPlayer().isDead()) {
+                ui.show("Vous êtes mort. Fin de la partie.");
+                gameState.deleteGameState();
                 return;
             }
             ui.show(sb.toString());
 
             int choice;
             choice = ui.ask();
-            Event nextNode = currentNode.getNextNode(choice);
+            Event nextNode = gameState.getEvent().getNextNode(choice);
 
             // Redemander un choix tant que getNextNode renvoie null
             while (nextNode == null) {
                 ui.show("Choix invalide. Veuillez réessayer.");
                 choice = ui.ask();
-                nextNode = currentNode.getNextNode(choice);
+                nextNode = gameState.getEvent().getNextNode(choice);
             }
-            currentNode = nextNode;
+            gameState.setEvent(nextNode);
+            gameState.updateGameState();
         }
-        ui.show(currentNode.display() + "\nFin de la partie" + END_CODE); // Display the terminal node
+        ui.show(gameState.getEvent().display() + ui.getEscape() + "Fin de la partie" + END_CODE); // Display the terminal node
+        gameState.deleteGameState();
     }
 
-    private Player createPlayer() throws IOException {
+    /**
+     * @return a new player
+     */
+    private Player createPlayer() {
         // Select character
         List<String> characters = Player.listOfCharacters();
         StringBuilder charactersString = new StringBuilder();
-        charactersString.append("Choisissez votre personnage :\n");
+        charactersString.append("Choisissez votre personnage :").append(ui.getEscape());
         for (int i = 0; i < characters.size(); i++) {
-            charactersString.append("\t").append(i + 1).append(". ").append(characters.get(i));
+            charactersString.append(ui.getTab()).append(i + 1).append(". ").append(characters.get(i)).append(ui.getEscape());
         }
         int characterChoice;
         ui.show(charactersString.toString());
@@ -107,33 +164,35 @@ public class Classic implements Game {
         do {
             characterChoice = ui.ask();
             if (characterChoice < 1 || characterChoice > characters.size())
-                ui.show("Choix invalide. Veuillez réessayer.\n" + charactersString);
+                ui.show("Choix invalide. Veuillez réessayer." + ui.getEscape() + charactersString);
             else {
-                ui.show("Votre personnage est : " + characters.get(characterChoice - 1) + "\n" +
-                        "Confirmez-vous ?\n" +
+                ui.show("Votre personnage est : " + characters.get(characterChoice - 1) + ui.getEscape() +
+                        "Confirmez-vous ?" + ui.getEscape() +
                         "\t1. Oui\t2. Non");
                 int confirm = ui.ask();
                 if (confirm == 1) valid = true;
-                else ui.show("Choix invalide. Veuillez réessayer.\n" + charactersString);
+                else ui.show("Choix invalide. Veuillez réessayer." + ui.getEscape() + charactersString);
             }
         } while (!valid);
 
         // Enter Name
         valid = false;
-        String name = "";
+        String name;
         ui.show("Entrez votre nom :");
         do {
             name = ui.askString();
-            if (name.isEmpty()) ui.show("Nom invalide. Veuillez réessayer.\nEntrez votre nom :");
+            if (name.isEmpty()) ui.show("Nom invalide. Veuillez réessayer." + ui.getEscape() + "Entrez votre nom :");
             else {
-                String sb = "Votre nom est : " + name + "\nConfirmez-vous ?\n\t1. Oui\t2. Non";
+                String sb = "Votre nom est : " + name + ui.getEscape() +
+                        "Confirmez-vous ?" + ui.getEscape() +
+                        ui.getTab() + "1. Oui" + ui.getTab() + "2. Non";
                 ui.show(sb);
                 int confirm = ui.ask();
                 if (confirm == 1) valid = true;
-                else ui.show("Choix invalide. Veuillez réessayer.\nEntrez votre nom :");
+                else ui.show("Choix invalide. Veuillez réessayer." + ui.getEscape() + "Entrez votre nom :");
             }
         } while (!valid);
 
-        return new NormalPlayer("", characters.get(characterChoice - 1));
+        return new NormalPlayer(name, characters.get(characterChoice - 1));
     }
 }

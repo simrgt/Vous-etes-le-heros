@@ -8,20 +8,13 @@ import java.sql.SQLException;
  * Represents a model in the database.
  */
 public abstract class Model {
-    private final static Connection c;
-
-    static {
-        try {
-            c = DriverManager.getConnection("jdbc:sqlite:database.db");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
+    private static final String DB_URL = "jdbc:sqlite:database.db";
 
     /**
-     * @return the connection to the database
+     * @return a new connection to the database
+     * @throws SQLException if a database access error occurs
      */
-    protected static Connection getConnection() {
-        return c;
+    protected static Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(DB_URL);
     }
 }

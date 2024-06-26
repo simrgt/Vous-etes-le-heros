@@ -11,4 +11,11 @@ public class PlayerAttributeException extends RuntimeException {
     public PlayerAttributeException(String attribute) {
         super("Attribute " + attribute + " not found");
     }
+
+    /**
+     * Default constructor
+     */
+    public PlayerAttributeException() {
+        super("Attribute not found");
+    }
 }

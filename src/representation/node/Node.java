@@ -60,4 +60,8 @@ public abstract class Node implements Event {
     public String getAttribute() {
         return attribute;
     }
+
+    public int getId() {
+        return id;
+    }
 }

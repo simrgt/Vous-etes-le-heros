@@ -7,10 +7,34 @@ import java.util.function.Supplier;
  * Console UI implementation
  */
 public class Console implements Ui {
-    protected static final int WIDTH = 80;
+    /**
+     * Tabulation character
+     */
+    private final static String TAB = "#t#";
+    /**
+     * Escape character
+     */
+    private final static String ESCAPE = "#n#";
+
+    /**
+     * Life balise
+     */
+    private final static String BALISE_LIFE = "#LIFE#";
+
+    /**
+     * Input supplier
+     */
     private final Supplier<String> in;
+
+    /**
+     * Output consumer
+     */
     private final Consumer<String> out;
 
+    /**
+     * @param in input supplier
+     * @param out output consumer
+     */
     public Console(Supplier<String> in, Consumer<String> out) {
         this.in = in;
         this.out = out;
@@ -18,51 +42,15 @@ public class Console implements Ui {
 
     /**
      * @param text text to show in the console
-     * @return
      */
 
     public void show(String text) {
-        StringBuilder sb = new StringBuilder();
-        String border = "=".repeat(WIDTH);
-        sb.append(border).append("\n");
-        sb.append(formatText(text).replace("\\n", System.lineSeparator()));
-        sb.append(border).append("\n");
-        out.accept(sb.toString());
-    }
-
-    /**
-     * @param text text to format
-     * @return formatted text
-     */
-    private static String formatText(String text) {
-        // Split the text into lines and add | at the beginning and end of each line
-        // to make it look like a dialog, the width of the dialog is 80 characters
-        StringBuilder sb = new StringBuilder();
-        for (String line : text.split("\n")) {
-            sb.append("| ");
-            int lineLength = line.length();
-            int numSpaces = WIDTH - lineLength - 4; // 4 = 2 spaces at the beginning and 2 spaces at the end
-            sb.append(line);
-            appendSpaces(sb, numSpaces);
-            sb.append(" |\n");
-        }
-        return sb.toString();
-    }
-
-    /**
-     * @param sb       StringBuilder to append spaces to
-     * @param numSpaces number of spaces to append
-     */
-    private static void appendSpaces(StringBuilder sb, int numSpaces) {
-        for (int i = 0; i < numSpaces; i++) {
-            sb.append(' ');
-        }
+        out.accept(text);
     }
 
     /**
      * @return user input
      */
-
     public int ask() {
         String input = in.get();
 
@@ -73,17 +61,35 @@ public class Console implements Ui {
         try {
             return Integer.parseInt(input); // Retourner l'entier si l'utilisateur en fournit un
         } catch (NumberFormatException e) {
-            return ask(); // Demander à nouveau à l'utilisateur de saisir un entier valide
+            return -1; // Demander à nouveau à l'utilisateur de saisir un entier valide
         }
     }
 
-
-    public void clear() {
-        out.accept("\033[H\033[2J");
-    }
-
-
+    /**
+     * @return user input
+     */
     public String askString() {
         return in.get();
+    }
+
+    /**
+     * @return escape character
+     */
+    public String getEscape() {
+        return ESCAPE;
+    }
+
+    /**
+     * @return tabulation character
+     */
+    public String getTab() {
+        return TAB;
+    }
+
+    /**
+     * @return life balise
+     */
+    public String getBaliseLife() {
+        return BALISE_LIFE;
     }
 }

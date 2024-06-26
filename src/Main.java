@@ -16,7 +16,7 @@ public class Main {
      */
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter 'server' to launch the server or 'local' to launch the clientMode to play local.");
+        System.out.println("Enter 'server' to launch the server or 'local' to launch the clientMode to debug locally.");
         String input = scanner.nextLine();
         if (input.equals("server")) {
             try {
