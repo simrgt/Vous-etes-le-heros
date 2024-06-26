@@ -1,8 +1,6 @@
 import game.Classic;
-import game.Game;
 import server.Server;
 import ui.Console;
-import ui.Ui;
 
 import java.io.IOException;
 import java.util.Scanner;

@@ -1,8 +1,8 @@
 package game;
 
 import db.GameStateModel;
-import univers.Player;
 import representation.Event;
+import univers.Player;
 
 import java.sql.SQLException;
 import java.util.HashMap;
