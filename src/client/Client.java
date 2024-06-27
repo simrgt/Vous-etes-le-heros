@@ -56,6 +56,11 @@ public class Client {
     private static Clip backgroundMusicClip;
 
     /**
+     * Sound level.
+     */
+    private static final float SOUND_LEVEL = -10.0f;
+
+    /**
      * @param args command line arguments
      */
     public static void main(String[] args) {
@@ -202,6 +207,9 @@ public class Client {
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(MUSIC_FILE_PATH + "background_music.wav").getAbsoluteFile());
             backgroundMusicClip = AudioSystem.getClip();
             backgroundMusicClip.open(audioInputStream);
+            // Get the gain control from the clip
+            FloatControl gainControl = (FloatControl) backgroundMusicClip.getControl(FloatControl.Type.MASTER_GAIN);
+            gainControl.setValue(SOUND_LEVEL);
             backgroundMusicClip.loop(Clip.LOOP_CONTINUOUSLY);
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             System.out.println("Error while playing background music.");
