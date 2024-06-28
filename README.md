@@ -4,7 +4,7 @@ Jeu du "Vous êtes le héros" réalisé par [Aghiles Azizi](https://github.com/A
 ### Javadoc
 Consultez la documentation du projet générée par Javadoc : [Documentation](https://simrgt.github.io/Vous-etes-le-heros/javadoc/index.html)
 ### Dossier de Développement
-Consultez le dossier de développement du projet : [Dossier de Développement](https://drive.google.com/file/d/1zSxJ9QUcmh70GXU_9nTOaDUxHIpZ90AV/view)
+Consultez le dossier de développement du projet : [Dossier de Développement](https://drive.google.com/file/d/1TSN1wa7AwnkeEJl7OT9FP1krtQf0hbj_/view?usp=sharing)
 ### Sujet
 Consulter le sujet du Projet : [Sujet](https://drive.google.com/file/d/1wOueDaIeGY45sRTLRcxozzG4V-ziXl88/view?usp=sharing)
 ### Documentation
