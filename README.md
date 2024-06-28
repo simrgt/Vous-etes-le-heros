@@ -1,6 +1,8 @@
 # Vous êtes le héros
 Jeu du "Vous êtes le héros" réalisé par [Aghiles Azizi](https://github.com/Aghiles-Azi) et [Simon Regenwetter](https://github.com/simrgt) dans le cadre du projet de la ressource **Java** de license 3 MIAGE à Dauphine.
 ## Liens
+### Repository
+Voici le lien du repository du projet : [Repository](https://github.com/simrgt/Vous-etes-le-heros)
 ### Javadoc
 Consultez la documentation du projet générée par Javadoc : [Documentation](https://simrgt.github.io/Vous-etes-le-heros/javadoc/index.html)
 ### Dossier de Développement
